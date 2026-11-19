@@ -11,7 +11,8 @@
 # An emulator is turned through its accelerometer. A phone has to be turned
 # by hand when the video goes fullscreen.
 #
-# Usage: scripts/conditions.sh [condition...]   (default: all three)
+# Usage: [VARIANTS=locked] scripts/conditions.sh [condition...]
+# Defaults: both variants, all three conditions.
 
 set -uo pipefail
 cd "$(dirname "$0")/.."
@@ -32,26 +33,31 @@ rotation() { adb shell dumpsys display | grep -o -m1 'mCurrentOrientation=[0-9]'
 landscape() { [ "$(rotation)" = 1 ] || [ "$(rotation)" = 3 ]; }
 
 # Turns an emulator through its accelerometer. A phone has to be turned by
-# hand, so this waits for it. Prints whether the display followed.
+# hand, so this watches for a while instead. Prints whether the display
+# followed. A locked app goes back to portrait as soon as the WebView is
+# destroyed, so landscape can be brief and the watch must not sleep.
 turn() {
-  local wait=60
+  local seconds=6
   if [ -n "$avd" ]; then
-    wait=6
     case $1 in
       landscape) adb emu sensor set acceleration 9.81:0:0 ;;
       portrait) adb emu sensor set acceleration 0:9.81:0 ;;
     esac >/dev/null
+  else
+    seconds=25
   fi
+  # On a phone a miss proves nothing: the turn may have been too brief.
   local followed=no
-  for ((i = 0; i < wait * 2; i++)); do
+  [ -z "$avd" ] && followed='not seen'
+  SECONDS=0
+  while [ $SECONDS -lt $seconds ]; do
     if { [ "$1" = landscape ] && landscape; } || { [ "$1" = portrait ] && ! landscape; }; then
       followed=yes
       break
     fi
-    sleep 0.5
   done
   sleep 3
-  echo $followed
+  echo "$followed"
 }
 
 # Two screenshots a second apart differ only while the video is playing. The
@@ -96,7 +102,7 @@ run() {
     case $condition in
       flow)
         reset "$app" 1
-        echo "auto-rotate before: 1"
+        echo "auto-rotate before: $(setting accelerometer_rotation)"
         echo
         maestro test ".maestro/$variant.yaml"
         echo
@@ -106,11 +112,12 @@ run() {
         local auto=1
         [ "$condition" = sensor-auto-off ] && auto=0
         reset "$app" "$auto"
-        echo "auto-rotate before: $auto"
+        echo "auto-rotate before: $(setting accelerometer_rotation)"
         echo
         maestro test -e APP_ID="$app" .maestro/sensor/enter.yaml
         echo
-        echo "in fullscreen, before turning: display rotation $(rotation), frames advancing: $(advancing)"
+        # Not on a phone: the measurement would overlap the turn by hand.
+        [ -n "$avd" ] && echo "in fullscreen, before turning: display rotation $(rotation), frames advancing: $(advancing)"
         echo "turned to landscape, display followed: $(turn landscape)"
         echo "in fullscreen, after turning: display rotation $(rotation), frames advancing: $(advancing)"
         echo
@@ -128,7 +135,7 @@ conditions=("$@")
 [ ${#conditions[@]} -eq 0 ] && conditions=(flow sensor-auto-on sensor-auto-off)
 
 for condition in "${conditions[@]}"; do
-  for variant in locked unlocked; do
+  for variant in ${VARIANTS:-locked unlocked}; do
     run "$variant" "$condition"
   done
 done
