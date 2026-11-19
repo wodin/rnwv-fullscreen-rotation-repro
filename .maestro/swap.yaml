@@ -1,0 +1,26 @@
+# The library replaces its WebChromeClient while the video is fullscreen.
+# Leaving fullscreen must bring the app back, with the WebView visible.
+appId: io.github.wodin.rnwvrotation
+---
+- setOrientation: PORTRAIT
+- launchApp:
+    clearState: true
+- assertVisible: 'mounts: 1'
+- tapOn: 'Swap client in 5s'
+- tapOn: 'Enter fullscreen'
+# Android's one-time immersive mode hint.
+- tapOn:
+    text: 'Got it'
+    optional: true
+# Maestro has no sleep. This waits out the delay before the swap.
+- extendedWaitUntil:
+    visible: 'Client swapped'
+    timeout: 8000
+    optional: true
+# Not there if the swap already ended fullscreen.
+- tapOn:
+    text: 'Exit fullscreen'
+    optional: true
+- assertVisible: 'Enter fullscreen'
+- assertVisible: 'mounts: 1'
+- assertVisible: 'unmounts: 0'

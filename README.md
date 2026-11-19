@@ -36,6 +36,13 @@ bun run android:unlocked
 bun run test:unlocked
 ```
 
+Two more flows run against the locked app:
+
+- `bun run test:modal`: the same, with the WebView inside a `Modal`.
+- `bun run test:swap`: adds `onOpenWindow` while the video is fullscreen, which
+  makes the library replace its `WebChromeClient`. Leaving fullscreen then
+  leaves the fullscreen view on screen.
+
 By hand: tap the video, rotate the device, and read the counters after
 leaving fullscreen.
 
@@ -47,6 +54,8 @@ Pixel 3a emulator, API 34. Full output is in [`output/`](output).
 | -------- | --------------------------------------------------- | --------------------------------------------------- |
 | Locked   | `mounts: 1, unmounts: 0, layouts: 393x807`          | `mounts: 2, unmounts: 1, layouts: 393x807, 807x393` |
 | Unlocked | `mounts: 1, unmounts: 0, layouts: 393x807, 807x393` | `mounts: 1, unmounts: 1, layouts: 393x807, 807x393` |
+| Modal    | `mounts: 2, unmounts: 1, layouts: 393x807`          | `mounts: 3, unmounts: 2, layouts: 393x807, 807x393` |
+| Swap     | back to the list, `Enter fullscreen` visible        | fullscreen view stays on screen                     |
 
 ## Conditions
 

@@ -1,0 +1,30 @@
+Running on Pixel_3a_API_34_extension_level_7_x86_64
+ > Flow swap
+Set orientation PORTRAIT... COMPLETED
+Launch app "io.github.wodin.rnwvrotation" with clear state... COMPLETED
+Assert that "mounts: 1" is visible... COMPLETED
+Tap on "Swap client in 5s"... COMPLETED
+Tap on "Enter fullscreen"... COMPLETED
+Tap on (Optional) "Got it"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Got it
+Assert that (Optional) "Client swapped" is visible... WARNED
+
+
+ Warning: Assertion is false: "Client swapped" is visible
+Tap on (Optional) "Exit fullscreen"... COMPLETED
+Assert that "Enter fullscreen" is visible... FAILED
+
+Assertion is false: "Enter fullscreen" is visible
+
+Assertion '"Enter fullscreen" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.
+
+Possible causes:
+- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.
+- Element may be temporarily unavailable due to loading state
+- This could be a real regression that needs to be addressed
+
+==== Debug output (logs & screenshots) ====
+
+/home/michael/.maestro/tests/2026-11-19_191943

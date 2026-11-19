@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react'
 import {
+  Button,
   FlatList,
   type LayoutChangeEvent,
+  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -13,17 +15,19 @@ import {WebView} from 'react-native-webview'
 const ROW_COUNT = 40
 const VIDEO_ROW = 20
 const ROWS = Array.from({length: ROW_COUNT}, (_, index) => index)
+const SWAP_DELAY_MS = 5000
 
 /*
  * The video is a canvas stream, so the page needs no network and no media
- * file. Tapping the stage toggles fullscreen.
+ * file. Tapping the stage toggles fullscreen. The suffix tells the page in the
+ * Modal apart from the one in the list.
  */
-const HTML = `
+const html = (suffix = '') => `
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body style="margin: 0; background: #000; color: #fff; font: 20px sans-serif">
   <div id="stage" style="background: #000">
     <video id="video" muted playsinline style="width: 100%"></video>
-    <p id="label" style="text-align: center">Enter fullscreen</p>
+    <p id="label" style="text-align: center">Enter fullscreen${suffix}</p>
   </div>
   <canvas id="canvas" width="320" height="180" hidden></canvas>
   <script>
@@ -48,8 +52,8 @@ const HTML = `
     }
     document.onfullscreenchange = () => {
       label.textContent = document.fullscreenElement
-        ? 'Exit fullscreen'
-        : 'Enter fullscreen'
+        ? 'Exit fullscreen${suffix}'
+        : 'Enter fullscreen${suffix}'
     }
   </script>
 </body>
@@ -61,6 +65,8 @@ export default function App() {
   const {width} = useWindowDimensions()
   const [counts, setCounts] = useState<Counts>({mounts: 0, unmounts: 0})
   const [layouts, setLayouts] = useState<string[]>([])
+  const [modalVisible, setModalVisible] = useState(false)
+  const [swapped, setSwapped] = useState(false)
 
   const onRootLayout = (e: LayoutChangeEvent) => {
     const {width: w, height: h} = e.nativeEvent.layout
@@ -74,7 +80,21 @@ export default function App() {
         <Text>mounts: {counts.mounts}</Text>
         <Text>unmounts: {counts.unmounts}</Text>
         <Text>layouts: {layouts.join(', ')}</Text>
+        <View style={styles.buttons}>
+          <Button title="Open Modal" onPress={() => setModalVisible(true)} />
+          {/*
+           * Delayed so that it happens while the video is fullscreen. Adding
+           * onOpenWindow makes the library replace its WebChromeClient.
+           */}
+          <Button
+            title="Swap client in 5s"
+            onPress={() => setTimeout(() => setSwapped(true), SWAP_DELAY_MS)}
+          />
+        </View>
       </View>
+      <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+        <VideoRow setCounts={setCounts} suffix=" in Modal" />
+      </Modal>
       {/*
        * Rows are square, like media in a feed, so they grow with the window
        * width. In landscape that pushes the video row out of the render
@@ -91,7 +111,7 @@ export default function App() {
         })}
         renderItem={({item}) =>
           item === VIDEO_ROW ? (
-            <VideoRow setCounts={setCounts} />
+            <VideoRow setCounts={setCounts} swapped={swapped} />
           ) : (
             <View style={styles.row}>
               <Text>Row {item}</Text>
@@ -105,8 +125,12 @@ export default function App() {
 
 function VideoRow({
   setCounts,
+  suffix,
+  swapped = false,
 }: {
   setCounts: React.Dispatch<React.SetStateAction<Counts>>
+  suffix?: string
+  swapped?: boolean
 }) {
   useEffect(() => {
     setCounts(c => ({...c, mounts: c.mounts + 1}))
@@ -116,9 +140,10 @@ function VideoRow({
   return (
     <View style={styles.videoRow}>
       <WebView
-        source={{html: HTML}}
+        source={{html: html(suffix)}}
         originWhitelist={['*']}
         allowsFullscreenVideo
+        onOpenWindow={swapped ? () => {} : undefined}
       />
     </View>
   )
@@ -132,6 +157,10 @@ const styles = StyleSheet.create({
   },
   counters: {
     padding: 8,
+  },
+  buttons: {
+    flexDirection: 'row',
+    gap: 8,
   },
   row: {
     aspectRatio: 1,
