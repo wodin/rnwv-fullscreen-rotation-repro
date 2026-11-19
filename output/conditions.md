@@ -44,6 +44,15 @@ How the device was turned while the video was fullscreen:
 | 36  | Auto-rotate on, by hand | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
 | 36  | Maestro                 | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
 
+## In a real app
+
+Bluesky (portrait-locked, `react-native-webview` 13.17.0, same fullscreen
+code) on the API 34 emulator with auto-rotate on, playing a YouTube embed
+from the feed in fullscreen: the display rotated, the video showed in
+landscape for about a second, then the app went back to portrait with the
+embed reset to its thumbnail. See
+[`conditions/api34-bluesky.txt`](conditions/api34-bluesky.txt).
+
 ## What decides it
 
 - The display has to rotate. With auto-rotate off, turning the device does

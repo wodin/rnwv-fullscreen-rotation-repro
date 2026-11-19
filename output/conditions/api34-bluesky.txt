@@ -1,0 +1,12 @@
+device: Pixel_3a_API_34_extension_level_7_x86_64 (API 34, WebView com.google.android.webview, 113.0.5672.136)
+app: Bluesky (xyz.blueskyweb.app) release build of bluesky-social/social-app fe28f869c, react-native-webview 13.17.0 unpatched
+condition: auto-rotate on, emulator turned through its accelerometer
+steps: YouTube embed in the feed, playing, fullscreen entered by hand in portrait
+
+auto-rotate before: 1
+in fullscreen, before turning: display rotation 0, frames advancing: yes
+turned to landscape, display followed: yes
+1s after turning: screenshot shows the video fullscreen in landscape
+4s after turning: display rotation 0, frames advancing: no
+10s later: display rotation 0, frames advancing: no
+after: portrait feed, the embed is back to its thumbnail with a play button, fullscreen gone
