@@ -4,40 +4,45 @@
 One file per run in [`conditions/`](conditions), written by
 [`scripts/conditions.sh`](../scripts/conditions.sh).
 
-| Emulator                                                 | Window (dp) | System WebView |
+| Device                                                   | Window (dp) | System WebView |
 | -------------------------------------------------------- | ----------- | -------------- |
 | Pixel 3a, API 34, `google_apis/x86_64`, 1080x2220 440dpi | 393x807     | 113.0.5672.136 |
 | Pixel 3a XL, API 28, `google_apis/x86`, 1080x2160 400dpi | 432x864     | 69.0.3497.100  |
+| Galaxy A34 (SM-A346E), Android 16 (API 36), 1080x2340    | 411x891     | 157.0.8103.50  |
 
 How the device was turned while the video was fullscreen:
 
 - **Auto-rotate on**: `accelerometer_rotation` 1, emulator turned through its
-  accelerometer.
+  accelerometer. The phone was turned by hand.
 - **Auto-rotate off**: `accelerometer_rotation` 0, turned the same way.
 - **Maestro**: `setOrientation`, which sets `accelerometer_rotation` to 0 and
   writes `user_rotation`. The setting from before the flow has no effect.
 
 ## App locked to portrait
 
-| API | Turned by       | Display rotated | Root laid out in landscape | WebView unmounted | Video still playing | After exit                           |
-| --- | --------------- | --------------- | -------------------------- | ----------------- | ------------------- | ------------------------------------ |
-| 34  | Auto-rotate on  | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
-| 34  | Maestro         | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
-| 34  | Auto-rotate off | no              | no                         | no                | yes                 | correct                              |
-| 28  | Auto-rotate on  | no              | no                         | no                | yes                 | correct                              |
-| 28  | Maestro         | not measured    | no                         | no                | yes                 | correct                              |
-| 28  | Auto-rotate off | no              | no                         | no                | yes                 | correct                              |
+| API | Turned by               | Display rotated | Root laid out in landscape | WebView unmounted | Video still playing | After exit                           |
+| --- | ----------------------- | --------------- | -------------------------- | ----------------- | ------------------- | ------------------------------------ |
+| 34  | Auto-rotate on          | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
+| 34  | Maestro                 | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
+| 34  | Auto-rotate off         | no              | no                         | no                | yes                 | correct                              |
+| 28  | Auto-rotate on          | no              | no                         | no                | yes                 | correct                              |
+| 28  | Maestro                 | not measured    | no                         | no                | yes                 | correct                              |
+| 28  | Auto-rotate off         | no              | no                         | no                | yes                 | correct                              |
+| 36  | Auto-rotate on, by hand | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
+| 36  | Maestro                 | yes             | yes                        | yes               | no                  | portrait, new WebView, video stopped |
 
 ## App with no orientation lock
 
-| API | Turned by       | Display rotated | Root laid out in landscape | WebView unmounted | Video still playing | After exit                            |
-| --- | --------------- | --------------- | -------------------------- | ----------------- | ------------------- | ------------------------------------- |
-| 34  | Auto-rotate on  | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
-| 34  | Maestro         | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
-| 34  | Auto-rotate off | no              | no                         | no                | yes                 | correct                               |
-| 28  | Auto-rotate on  | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
-| 28  | Maestro         | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
-| 28  | Auto-rotate off | no              | no                         | no                | yes                 | correct                               |
+| API | Turned by               | Display rotated | Root laid out in landscape | WebView unmounted | Video still playing | After exit                            |
+| --- | ----------------------- | --------------- | -------------------------- | ----------------- | ------------------- | ------------------------------------- |
+| 34  | Auto-rotate on          | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
+| 34  | Maestro                 | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
+| 34  | Auto-rotate off         | no              | no                         | no                | yes                 | correct                               |
+| 28  | Auto-rotate on          | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
+| 28  | Maestro                 | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
+| 28  | Auto-rotate off         | no              | no                         | no                | yes                 | correct                               |
+| 36  | Auto-rotate on, by hand | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
+| 36  | Maestro                 | yes             | yes                        | yes               | no                  | landscape, video row gone, no WebView |
 
 ## What decides it
 
@@ -60,6 +65,9 @@ x86_64 image, default settings, `bun run android && bun run test`.
 - "video row on screen" comes from `uiautomator dump`, which is unreliable
   while the video plays (`api28-locked-sensor-auto-on.txt` reports `no` for a
   run that passed).
+- On the phone the watch for the turn missed it in the locked app
+  (`display followed: not seen`). The `891x411` layout shows the display
+  rotated.
 - In the locked app the display returns to portrait as soon as the WebView is
   destroyed, so "display rotation" after turning reads 0. "display followed"
   is the reliable line.
