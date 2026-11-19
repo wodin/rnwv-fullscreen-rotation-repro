@@ -1,0 +1,24 @@
+Running on adb-RFCW30L6SLB-KI5c8F._adb-tls-connect._tcp
+ > Flow modal
+Set orientation PORTRAIT... COMPLETED
+Launch app "io.github.wodin.rnwvrotation" with clear state... COMPLETED
+Assert that "mounts: 1" is visible... COMPLETED
+Tap on "Open Modal"... COMPLETED
+Tap on "Enter fullscreen in Modal"... COMPLETED
+Tap on (Optional) "Got it"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Got it
+Set orientation LANDSCAPE_LEFT... COMPLETED
+Wait for animation to end... COMPLETED
+Tap on (Optional) "Exit fullscreen in Modal"... COMPLETED
+Set orientation PORTRAIT... COMPLETED
+Assert that "Enter fullscreen in Modal" is visible... COMPLETED
+Press back... COMPLETED
+Copy text from element with "mounts: \d+"... COMPLETED
+Run ${output.mounts = maestro.copiedText}... COMPLETED
+Copy text from element with "unmounts: \d+"... COMPLETED
+Run ${output.unmounts = maestro.copiedText}... COMPLETED
+Copy text from element with "layouts: .*"... COMPLETED
+Run ${output.layouts = maestro.copiedText}... COMPLETED
+Run check.js... COMPLETED

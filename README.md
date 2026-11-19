@@ -64,6 +64,17 @@ reports `393x807, 807x393`. The unlocked app comes back in landscape and
 unmounts the row then, so its flow checks for `Exit fullscreen` instead of
 `unmounts: 0`.
 
+## Result with the fix
+
+This branch installs `react-native-webview-fix.tgz`, built from
+[`fix/fullscreen-root-hide`](https://github.com/wodin/react-native-webview/tree/fix/fullscreen-root-hide).
+All four flows pass on the Pixel 3a emulator (API 34) and on a Galaxy A34
+(Android 16). Output is in `output/*-fix-api34.txt` and `output/*-fix-a34.txt`.
+
+The locked app still reports two `layouts`. The library restores the
+orientation and shows the root in the same step, and the root is measured once
+before the display has turned back.
+
 ## Conditions
 
 The display has to rotate, so auto-rotate must be on. See
