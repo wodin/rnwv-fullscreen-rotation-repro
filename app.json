@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "RNWV rotation (locked)",
+    "slug": "rnwv-fullscreen-rotation-repro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "io.github.wodin.rnwvrotation"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "rnwv-fullscreen-rotation-repro",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "android": "expo prebuild --clean --platform android && expo run:android --variant release --no-bundler",
+    "android:unlocked": "UNLOCKED=1 bun run android",
+    "test": "maestro test .maestro/locked.yaml",
+    "test:unlocked": "maestro test .maestro/unlocked.yaml"
+  },
+  "dependencies": {
+    "expo": "~58.0.26",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-webview": "17.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "typescript": "~6.0.3"
+  }
+}
