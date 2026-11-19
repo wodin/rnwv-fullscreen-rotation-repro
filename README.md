@@ -47,3 +47,9 @@ Pixel 3a emulator, API 34. Full output is in [`output/`](output).
 | -------- | --------------------------------------------------- | --------------------------------------------------- |
 | Locked   | `mounts: 1, unmounts: 0, layouts: 393x807`          | `mounts: 2, unmounts: 1, layouts: 393x807, 807x393` |
 | Unlocked | `mounts: 1, unmounts: 0, layouts: 393x807, 807x393` | `mounts: 1, unmounts: 1, layouts: 393x807, 807x393` |
+
+## Conditions
+
+The display has to rotate, so auto-rotate must be on. See
+[`output/conditions.md`](output/conditions.md) for the runs on two emulators
+with auto-rotate on and off. `scripts/conditions.sh` produces them.

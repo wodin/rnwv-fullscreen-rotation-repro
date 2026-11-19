@@ -1,0 +1,34 @@
+device: Pixel_3a_XL_API_28 (API 28, WebView com.android.chrome, 69.0.3497.100)
+variant: locked, condition: sensor-auto-off
+auto-rotate before: 0
+
+Running on Pixel_3a_XL_API_28
+ > Flow enter
+Launch app "${APP_ID}" with clear state... COMPLETED
+Assert that "mounts: 1" is visible... COMPLETED
+Tap on "Enter fullscreen"... COMPLETED
+Tap on (Optional) "Got it"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Got it
+
+in fullscreen, before turning: display rotation 0, frames advancing: no
+turned to landscape, display followed: no
+in fullscreen, after turning: display rotation 0, frames advancing: no
+
+Running on Pixel_3a_XL_API_28
+ > Flow exit
+Tap on (Optional) "Exit fullscreen"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Exit fullscreen
+Copy text from element with "mounts: \d+"... COMPLETED
+Run ${output.mounts = maestro.copiedText}... COMPLETED
+Copy text from element with "unmounts: \d+"... COMPLETED
+Run ${output.unmounts = maestro.copiedText}... COMPLETED
+Copy text from element with "layouts: .*"... COMPLETED
+Run ${output.layouts = maestro.copiedText}... COMPLETED
+Run ../check.js... COMPLETED
+
+after exit: display rotation 0, video row on screen: yes, frames advancing: no
+auto-rotate after: 0, user_rotation after: 0

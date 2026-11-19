@@ -1,0 +1,31 @@
+device: Pixel_3a_XL_API_28 (API 28, WebView com.android.chrome, 69.0.3497.100)
+variant: locked, condition: flow
+auto-rotate before: 1
+
+Running on Pixel_3a_XL_API_28
+ > Flow locked
+Set orientation PORTRAIT... COMPLETED
+Launch app "io.github.wodin.rnwvrotation" with clear state... COMPLETED
+Assert that "mounts: 1" is visible... COMPLETED
+Tap on "Enter fullscreen"... COMPLETED
+Tap on (Optional) "Got it"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Got it
+Set orientation LANDSCAPE_LEFT... COMPLETED
+Wait for animation to end... COMPLETED
+Tap on (Optional) "Exit fullscreen"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Exit fullscreen
+Set orientation PORTRAIT... COMPLETED
+Copy text from element with "mounts: \d+"... COMPLETED
+Run ${output.mounts = maestro.copiedText}... COMPLETED
+Copy text from element with "unmounts: \d+"... COMPLETED
+Run ${output.unmounts = maestro.copiedText}... COMPLETED
+Copy text from element with "layouts: .*"... COMPLETED
+Run ${output.layouts = maestro.copiedText}... COMPLETED
+Run check.js... COMPLETED
+
+after exit: display rotation 0, video row on screen: yes, frames advancing: yes
+auto-rotate after: 0, user_rotation after: 0

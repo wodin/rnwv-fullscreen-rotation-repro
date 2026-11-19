@@ -1,0 +1,75 @@
+device: Pixel_3a_API_34_extension_level_7_x86_64 (API 34, WebView com.google.android.webview, 113.0.5672.136)
+variant: locked, condition: sensor-auto-on
+auto-rotate before: 1
+
+Running on Pixel_3a_API_34_extension_level_7_x86_64
+ > Flow enter
+Launch app "${APP_ID}" with clear state... COMPLETED
+Assert that "mounts: 1" is visible... COMPLETED
+Tap on "Enter fullscreen"... COMPLETED
+Tap on (Optional) "Got it"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Got it
+
+in fullscreen, before turning: display rotation 0, frames advancing: yes
+turned to landscape, display followed: yes
+in fullscreen, after turning: display rotation 0, frames advancing: no
+
+Running on Pixel_3a_API_34_extension_level_7_x86_64
+ > Flow exit
+Tap on (Optional) "Exit fullscreen"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Exit fullscreen
+Copy text from element with "mounts: \d+"... COMPLETED
+Run ${output.mounts = maestro.copiedText}... COMPLETED
+Copy text from element with "unmounts: \d+"... COMPLETED
+Run ${output.unmounts = maestro.copiedText}... COMPLETED
+Copy text from element with "layouts: .*"... COMPLETED
+Run ${output.layouts = maestro.copiedText}... COMPLETED
+Run ../check.js...Error: Expected "mounts: 1, unmounts: 0, layouts: \d+x\d+", got "mounts: 2, unmounts: 1, layouts: 393x807, 807x393"
+	at <js> :program(../check.js:4:207-261)
+	at org.graalvm.polyglot.Context.eval(Context.java:402)
+	at maestro.js.GraalJsEngine.evaluateScript(GraalJsEngine.kt:86)
+	at maestro.js.GraalJsEngine.evaluateScript(GraalJsEngine.kt:26)
+	at maestro.orchestra.Orchestra.runScriptCommand(Orchestra.kt:536)
+	at maestro.orchestra.Orchestra.executeCommand(Orchestra.kt:360)
+	at maestro.orchestra.Orchestra.executeCommands(Orchestra.kt:255)
+	at maestro.orchestra.Orchestra.runFlow(Orchestra.kt:173)
+	at maestro.cli.runner.MaestroCommandRunner.runCommands(MaestroCommandRunner.kt:196)
+	at maestro.cli.runner.TestRunner$runSingle$result$1$1.invokeSuspend(TestRunner.kt:75)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at maestro.cli.runner.TestRunner.runSingle$lambda$0(TestRunner.kt:74)
+	at maestro.cli.runner.TestRunner.runCatching-ta8aW1Q(TestRunner.kt:200)
+	at maestro.cli.runner.TestRunner.runSingle(TestRunner.kt:65)
+	at maestro.cli.command.TestCommand.runSingleFlow(TestCommand.kt:520)
+	at maestro.cli.command.TestCommand.runShardSuite$lambda$10(TestCommand.kt:489)
+	at maestro.cli.session.MaestroSessionManager.newSession(MaestroSessionManager.kt:129)
+	at maestro.cli.session.MaestroSessionManager.newSession$default(MaestroSessionManager.kt:65)
+	at maestro.cli.command.TestCommand.runShardSuite(TestCommand.kt:454)
+	at maestro.cli.command.TestCommand.access$runShardSuite(TestCommand.kt:80)
+	at maestro.cli.command.TestCommand$handleSessions$1$results$1$1.invokeSuspend(TestCommand.kt:413)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:111)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:99)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:585)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:802)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:706)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:693)
+
+
+==== Debug output (logs & screenshots) ====
+
+/home/michael/.maestro/tests/2026-11-19_180517
+
+after exit: display rotation 0, video row on screen: yes, frames advancing: no
+auto-rotate after: 1, user_rotation after: 0
