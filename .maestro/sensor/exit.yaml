@@ -2,6 +2,13 @@
 # orientation the device is in.
 appId: ${APP_ID}
 ---
+# The unlocked app comes back in landscape and unmounts the row then, so its
+# counters cannot show that the WebView survived fullscreen. This can.
+- runFlow:
+    when:
+      true: ${REQUIRE_EXIT == 'true'}
+    commands:
+      - assertVisible: 'Exit fullscreen'
 # Not there if the WebView was destroyed, or if the page is not laid out yet.
 - tapOn:
     text: 'Exit fullscreen'

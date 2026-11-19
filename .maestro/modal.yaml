@@ -31,4 +31,4 @@ appId: io.github.wodin.rnwvrotation
     file: check.js
     env:
       # The Modal closing unmounts its WebView.
-      WANT: 'mounts: 2, unmounts: 1, layouts: \d+x\d+'
+      WANT: 'mounts: 2, unmounts: 1, layouts: .*'

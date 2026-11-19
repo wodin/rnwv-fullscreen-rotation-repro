@@ -1,5 +1,5 @@
-# No orientation lock. Rotating during fullscreen must not unmount the WebView,
-# and the app comes back in landscape.
+# No orientation lock. Rotating during fullscreen must not unmount the WebView.
+# The app comes back in landscape, and that layout does unmount the row.
 appId: io.github.wodin.rnwvrotation.unlocked
 ---
 - setOrientation: PORTRAIT
@@ -14,9 +14,7 @@ appId: io.github.wodin.rnwvrotation.unlocked
 - setOrientation: LANDSCAPE_LEFT
 - waitForAnimationToEnd
 # Not there if the WebView was destroyed.
-- tapOn:
-    text: 'Exit fullscreen'
-    optional: true
+- tapOn: 'Exit fullscreen'
 - copyTextFrom: 'mounts: \d+'
 - evalScript: ${output.mounts = maestro.copiedText}
 - copyTextFrom: 'unmounts: \d+'
@@ -26,5 +24,5 @@ appId: io.github.wodin.rnwvrotation.unlocked
 - runScript:
     file: check.js
     env:
-      WANT: 'mounts: 1, unmounts: 0, layouts: \d+x\d+, \d+x\d+'
+      WANT: 'mounts: 1, unmounts: \d+, layouts: \d+x\d+, \d+x\d+'
 - setOrientation: PORTRAIT

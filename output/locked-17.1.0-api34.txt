@@ -21,7 +21,7 @@ Copy text from element with "unmounts: \d+"... COMPLETED
 Run ${output.unmounts = maestro.copiedText}... COMPLETED
 Copy text from element with "layouts: .*"... COMPLETED
 Run ${output.layouts = maestro.copiedText}... COMPLETED
-Run check.js...Error: Expected "mounts: 1, unmounts: 0, layouts: \d+x\d+", got "mounts: 2, unmounts: 1, layouts: 393x807, 807x393"
+Run check.js...Error: Expected "mounts: 1, unmounts: 0, layouts: .*", got "mounts: 2, unmounts: 1, layouts: 393x807, 807x393"
 	at <js> :program(check.js:4:207-261)
 	at org.graalvm.polyglot.Context.eval(Context.java:402)
 	at maestro.js.GraalJsEngine.evaluateScript(GraalJsEngine.kt:86)
@@ -62,4 +62,4 @@ Run check.js...Error: Expected "mounts: 1, unmounts: 0, layouts: \d+x\d+", got "
 
 ==== Debug output (logs & screenshots) ====
 
-/home/michael/.maestro/tests/2026-11-19_135211
+/home/michael/.maestro/tests/2026-11-19_204317

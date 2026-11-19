@@ -27,4 +27,4 @@ Possible causes:
 
 ==== Debug output (logs & screenshots) ====
 
-/home/michael/.maestro/tests/2026-11-19_191943
+/home/michael/.maestro/tests/2026-11-19_204442

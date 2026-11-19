@@ -10,9 +10,9 @@ unmount the row holding the WebView, which destroys it and ends fullscreen.
 
 ## The app
 
-One screen: a `FlatList` of square rows, with a WebView in row 20. The page is
-inline HTML with a `<video>` fed by a canvas, so it needs no network. Tapping
-it toggles fullscreen.
+One screen: a `FlatList` of square rows as wide as the root view, with a
+WebView in row 20. The page is inline HTML with a `<video>` fed by a canvas, so
+it needs no network. Tapping it toggles fullscreen.
 
 Three counters sit above the list:
 
@@ -50,12 +50,19 @@ leaving fullscreen.
 
 Pixel 3a emulator, API 34. Full output is in [`output/`](output).
 
-| Variant  | Expected                                            | Actual                                              |
-| -------- | --------------------------------------------------- | --------------------------------------------------- |
-| Locked   | `mounts: 1, unmounts: 0, layouts: 393x807`          | `mounts: 2, unmounts: 1, layouts: 393x807, 807x393` |
-| Unlocked | `mounts: 1, unmounts: 0, layouts: 393x807, 807x393` | `mounts: 1, unmounts: 1, layouts: 393x807, 807x393` |
-| Modal    | `mounts: 2, unmounts: 1, layouts: 393x807`          | `mounts: 3, unmounts: 2, layouts: 393x807, 807x393` |
-| Swap     | back to the list, `Enter fullscreen` visible        | fullscreen view stays on screen                     |
+| Variant  | Expected                                     | Actual                                |
+| -------- | -------------------------------------------- | ------------------------------------- |
+| Locked   | `mounts: 1, unmounts: 0`                     | `mounts: 2, unmounts: 1`              |
+| Unlocked | `Exit fullscreen` on screen after rotating   | not found, the WebView was destroyed  |
+| Modal    | `mounts: 2, unmounts: 1`                     | `mounts: 3, unmounts: 2`              |
+| Swap     | back to the list, `Enter fullscreen` visible | fullscreen view stays on screen       |
+
+The Modal closing unmounts its own WebView, so one unmount is expected there.
+
+The flows print `layouts` but do not assert on it. On 17.1.0 the locked app
+reports `393x807, 807x393`. The unlocked app comes back in landscape and
+unmounts the row then, so its flow checks for `Exit fullscreen` instead of
+`unmounts: 0`.
 
 ## Conditions
 

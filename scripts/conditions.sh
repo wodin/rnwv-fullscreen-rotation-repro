@@ -89,10 +89,11 @@ observe_after() {
 }
 
 run() {
-  local variant=$1 condition=$2 app=$APP_ID want='mounts: 1, unmounts: 0, layouts: \d+x\d+'
+  local variant=$1 condition=$2 app=$APP_ID want='mounts: 1, unmounts: 0, layouts: .*' require_exit=false
   if [ "$variant" = unlocked ]; then
     app=$APP_ID.unlocked
-    want="$want, \\d+x\\d+"
+    want='mounts: 1, unmounts: \d+, layouts: .*'
+    require_exit=true
   fi
   local file=$OUT/api$sdk-$variant-$condition.txt
   echo "== $file"
@@ -121,7 +122,7 @@ run() {
         echo "turned to landscape, display followed: $(turn landscape)"
         echo "in fullscreen, after turning: display rotation $(rotation), frames advancing: $(advancing)"
         echo
-        maestro test -e APP_ID="$app" -e WANT="$want" .maestro/sensor/exit.yaml
+        maestro test -e APP_ID="$app" -e WANT="$want" -e REQUIRE_EXIT="$require_exit" .maestro/sensor/exit.yaml
         echo
         # The unlocked app stays in landscape, so look before turning back.
         observe_after
