@@ -1,0 +1,30 @@
+# Portrait-locked app. Rotating during fullscreen must not lay out the React
+# root in landscape or unmount the WebView.
+appId: io.github.wodin.rnwvrotation
+---
+- setOrientation: PORTRAIT
+- launchApp:
+    clearState: true
+- assertVisible: 'mounts: 1'
+- tapOn: 'Enter fullscreen'
+# Android's one-time immersive mode hint.
+- tapOn:
+    text: 'Got it'
+    optional: true
+- setOrientation: LANDSCAPE_LEFT
+- waitForAnimationToEnd
+# Not there if the WebView was destroyed.
+- tapOn:
+    text: 'Exit fullscreen'
+    optional: true
+- setOrientation: PORTRAIT
+- copyTextFrom: 'mounts: \d+'
+- evalScript: ${output.mounts = maestro.copiedText}
+- copyTextFrom: 'unmounts: \d+'
+- evalScript: ${output.unmounts = maestro.copiedText}
+- copyTextFrom: 'layouts: .*'
+- evalScript: ${output.layouts = maestro.copiedText}
+- runScript:
+    file: check.js
+    env:
+      WANT: 'mounts: 1, unmounts: 0, layouts: \d+x\d+'
