@@ -7,7 +7,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  useWindowDimensions,
   View,
 } from 'react-native'
 import {WebView} from 'react-native-webview'
@@ -26,7 +25,8 @@ const html = (suffix = '') => `
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body style="margin: 0; background: #000; color: #fff; font: 20px sans-serif">
   <div id="stage" style="background: #000">
-    <video id="video" muted playsinline style="width: 100%"></video>
+    <!-- The height limit keeps the label on screen in landscape fullscreen. -->
+    <video id="video" muted playsinline style="width: 100%; max-height: 70vh"></video>
     <p id="label" style="text-align: center">Enter fullscreen${suffix}</p>
   </div>
   <canvas id="canvas" width="320" height="180" hidden></canvas>
@@ -62,7 +62,11 @@ const html = (suffix = '') => `
 type Counts = {mounts: number; unmounts: number}
 
 export default function App() {
-  const {width} = useWindowDimensions()
+  /*
+   * From the root's layout, not useWindowDimensions: window dimensions follow
+   * the display whether or not the root is laid out for it.
+   */
+  const [width, setWidth] = useState(0)
   const [counts, setCounts] = useState<Counts>({mounts: 0, unmounts: 0})
   const [layouts, setLayouts] = useState<string[]>([])
   const [modalVisible, setModalVisible] = useState(false)
@@ -72,6 +76,7 @@ export default function App() {
     const {width: w, height: h} = e.nativeEvent.layout
     const size = `${Math.round(w)}x${Math.round(h)}`
     setLayouts(prev => (prev.includes(size) ? prev : [...prev, size]))
+    setWidth(w)
   }
 
   return (
@@ -96,29 +101,31 @@ export default function App() {
         <VideoRow setCounts={setCounts} suffix=" in Modal" />
       </Modal>
       {/*
-       * Rows are square, like media in a feed, so they grow with the window
+       * Rows are square, like media in a feed, so they grow with the root's
        * width. In landscape that pushes the video row out of the render
        * window, and the list unmounts it.
        */}
-      <FlatList
-        data={ROWS}
-        keyExtractor={String}
-        initialScrollIndex={VIDEO_ROW}
-        getItemLayout={(_, index) => ({
-          length: width,
-          offset: width * index,
-          index,
-        })}
-        renderItem={({item}) =>
-          item === VIDEO_ROW ? (
-            <VideoRow setCounts={setCounts} swapped={swapped} />
-          ) : (
-            <View style={styles.row}>
-              <Text>Row {item}</Text>
-            </View>
-          )
-        }
-      />
+      {width > 0 && (
+        <FlatList
+          data={ROWS}
+          keyExtractor={String}
+          initialScrollIndex={VIDEO_ROW}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          renderItem={({item}) =>
+            item === VIDEO_ROW ? (
+              <VideoRow setCounts={setCounts} swapped={swapped} />
+            ) : (
+              <View style={styles.row}>
+                <Text>Row {item}</Text>
+              </View>
+            )
+          }
+        />
+      )}
     </View>
   )
 }
