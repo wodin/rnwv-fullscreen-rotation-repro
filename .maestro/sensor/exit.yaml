@@ -1,0 +1,18 @@
+# Second half: leave fullscreen and check the counters, at whatever
+# orientation the device is in.
+appId: ${APP_ID}
+---
+# Not there if the WebView was destroyed, or if the page is not laid out yet.
+- tapOn:
+    text: 'Exit fullscreen'
+    optional: true
+- copyTextFrom: 'mounts: \d+'
+- evalScript: ${output.mounts = maestro.copiedText}
+- copyTextFrom: 'unmounts: \d+'
+- evalScript: ${output.unmounts = maestro.copiedText}
+- copyTextFrom: 'layouts: .*'
+- evalScript: ${output.layouts = maestro.copiedText}
+- runScript:
+    file: ../check.js
+    env:
+      WANT: ${WANT}
